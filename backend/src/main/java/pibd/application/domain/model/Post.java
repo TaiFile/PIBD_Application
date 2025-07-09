@@ -72,6 +72,14 @@ public class Post {
         this.user = user;
     }
 
+    public Set<Reaction> getReactions() {
+        return reactions;
+    }
+
+    public void setReactions(Set<Reaction> reactions) {
+        this.reactions = reactions;
+    }
+
     public Set<Comment> getComments() {
         return comments;
     }
