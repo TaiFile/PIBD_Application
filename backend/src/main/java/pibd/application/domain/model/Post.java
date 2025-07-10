@@ -30,7 +30,8 @@ public class Post {
     @Column(name = "url", nullable = false)
     private Set<String> mediaUrls = new HashSet<>();
 
-    @Column
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false)
     private Date createdAt;
 
     @Column
@@ -44,18 +45,15 @@ public class Post {
     @Column
     private Category category;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Reaction> reactions = new HashSet<>();
+    private Set<ReactionUserPost> reactions = new HashSet<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Comment> comments = new HashSet<>();
-
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Reaction> reactionUserPosts = new HashSet<>();
 
     public Post() {
     }
@@ -72,6 +70,15 @@ public class Post {
         this.user = user;
     }
 
+    public Set<ReactionUserPost> getReactions() {
+        return reactions;
+    }
+
+    public void setReactions(Set<ReactionUserPost> reactions) {
+        this.reactions = reactions;
+    }
+
+
     public Set<Comment> getComments() {
         return comments;
     }
@@ -80,12 +87,12 @@ public class Post {
         this.comments = comments;
     }
 
-    public Set<Reaction> getReactionUserPosts() {
-        return reactions;
+    public Long getId() {
+        return id;
     }
 
-    public void setReactionUserPosts(Set<Reaction> reactions) {
-        this.reactions = reactions;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -94,14 +101,6 @@ public class Post {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getContent() {
@@ -144,12 +143,12 @@ public class Post {
         this.locality = locality;
     }
 
-    public User getUser() {
-        return user;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public Category getCategory() {
@@ -160,23 +159,24 @@ public class Post {
         this.category = category;
     }
 
-    public Status getStatus() {
-        return status;
+    public User getUser() {
+        return user;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
     public boolean equals(Object o) {
+        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Post post = (Post) o;
-        return Objects.equals(getId(), post.getId()) && Objects.equals(getTitle(), post.getTitle()) && Objects.equals(getContent(), post.getContent()) && Objects.equals(getDescription(), post.getDescription()) && Objects.equals(getMediaUrls(), post.getMediaUrls()) && Objects.equals(getCreatedAt(), post.getCreatedAt()) && Objects.equals(getLocality(), post.getLocality()) && getStatus() == post.getStatus() && getCategory() == post.getCategory() && Objects.equals(getUser(), post.getUser());
+        return id != null && Objects.equals(id, post.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getTitle(), getContent(), getDescription(), getMediaUrls(), getCreatedAt(), getLocality(), getStatus(), getCategory(), getUser());
+        return getClass().hashCode();
     }
 }

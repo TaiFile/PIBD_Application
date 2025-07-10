@@ -8,7 +8,6 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "clients")
 public class Client extends User{
     @Column
     private String name;

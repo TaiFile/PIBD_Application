@@ -29,7 +29,7 @@ public class Comment {
     private Post post;
 
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Reaction> reactions = new HashSet<>();
+    private Set<ReactionUserComment> reactionsUserComment = new HashSet<>();
 
 
     //    Autorrelação
@@ -53,18 +53,16 @@ public class Comment {
     }
 
     public Comment(String content, User author, Post post, Comment parentComment) {
-        this(content, author, post); // Reutiliza o outro construtor
+        this(content, author, post);
         this.parentComment = parentComment;
     }
 
-
-
-    public Set<Reaction> getReactions() {
-        return reactions;
+    public Set<ReactionUserComment> getReactions() {
+        return reactionsUserComment;
     }
 
-    public void setReactions(Set<Reaction> reactions) {
-        this.reactions = reactions;
+    public void setReactions(Set<ReactionUserComment> reactionsUserComment) {
+        this.reactionsUserComment = reactionsUserComment;
     }
 
 
