@@ -35,9 +35,7 @@ public class CreateCommentService {
         return new CommentResponseDTO(
                 savedComment.getId(),
                 savedComment.getContent(),
-                savedComment.getCreatedAt(),
-                savedComment.getAuthor(),
-                savedComment.getPost()
+                savedComment.getCreatedAt()
         );
     }
 }

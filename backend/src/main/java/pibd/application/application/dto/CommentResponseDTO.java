@@ -7,8 +7,6 @@ import java.util.Date;
 public record CommentResponseDTO (
         Long id,
         String content,
-        Date createdAt,
-        User author,
-        Post post
+        Date createdAt
 ){
 }

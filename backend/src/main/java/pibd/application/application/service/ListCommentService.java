@@ -25,9 +25,8 @@ public class ListCommentService {
                 .map(comment -> new CommentResponseDTO(
                         comment.getId(),
                         comment.getContent(),
-                        comment.getCreatedAt(),
-                        comment.getAuthor(),
-                        comment.getPost()
+                        comment.getCreatedAt()
+
                 ))
                 .toList();
     }
