@@ -1,6 +1,5 @@
 package pibd.application.application.dto;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import pibd.application.domain.enums.Category;
@@ -24,6 +23,8 @@ public record CreatePostDTO(
         String locality,
 
         @NotNull(message = "A categoria é obrigatória.")
-        Category category
+        Category category,
+
+        Set<String>mediaUrls
 ) {
 }
