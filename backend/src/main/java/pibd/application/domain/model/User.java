@@ -21,14 +21,18 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column()
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Role role;
 
     @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Post> post = new HashSet<>();
+    private Set<Post> posts = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Reaction> reactions = new HashSet<>();
+    private Set<ReactionUserComment> reactionsUserComment = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ReactionUserPost> reactionsUserPosts = new HashSet<>();
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Comment> comments = new HashSet<>();
@@ -48,38 +52,7 @@ public class User {
         this.role = Role.CITIZEN;
     }
 
-    public Set<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(Set<Comment> comments) {
-        this.comments = comments;
-    }
-
-    public Set<Reaction> getReactionUserPosts() {
-        return reactions;
-    }
-
-    public void setReactionUserPosts(Set<Reaction> reactions) {
-        this.reactions = reactions;
-    }
-
-    public Set<Post> getPost() {
-        return post;
-    }
-
-    public void setPost(Set<Post> post) {
-        this.post = post;
-    }
-
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    // Getters e Setters
 
     public Long getId() {
         return id;
@@ -87,6 +60,14 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -105,15 +86,48 @@ public class User {
         this.role = role;
     }
 
+    public Set<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(Set<Post> posts) {
+        this.posts = posts;
+    }
+
+    public Set<ReactionUserComment> getReactionsUserComment() {
+        return reactionsUserComment;
+    }
+
+    public void setReactionsUserComment(Set<ReactionUserComment> reactionsUserComment) {
+        this.reactionsUserComment = reactionsUserComment;
+    }
+
+    public Set<ReactionUserPost> getReactionsUserPosts() {
+        return reactionsUserPosts;
+    }
+
+    public void setReactionsUserPosts(Set<ReactionUserPost> reactionsUserPosts) {
+        this.reactionsUserPosts = reactionsUserPosts;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
+    }
+
     @Override
     public boolean equals(Object o) {
+        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(getId(), user.getId()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getPassword(), user.getPassword()) && getRole() == user.getRole() && Objects.equals(getPost(), user.getPost()) && Objects.equals(getReactionUserPosts(), user.getReactionUserPosts()) && Objects.equals(getComments(), user.getComments());
+        return id != null && Objects.equals(id, user.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getEmail(), getPassword(), getRole(), getPost(), getReactionUserPosts(), getComments());
+        return getClass().hashCode();
     }
 }
