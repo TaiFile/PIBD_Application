@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pibd.application.application.dto.CommentResponseDTO;
 import pibd.application.application.dto.CreateCommentDTO;
+import pibd.application.application.service.CreateCommentService;
+import pibd.application.application.service.ListCommentService;
 
 import java.net.URI;
 import java.util.List;
