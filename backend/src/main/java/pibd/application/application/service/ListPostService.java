@@ -21,7 +21,7 @@ public class ListPostService {
                         post.getDescription(),
                         post.getMediaUrls(),
                         post.getCreatedAt(),
-                        post.getLocality(),
+                        post.getLocation(),
                         post.getStatus(),
                         post.getCategory(),
                         0,

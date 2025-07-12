@@ -2,45 +2,49 @@ package pibd.application.domain.model;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "comments")
+@Table(name = "Comentario")
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 1000)
+    @Column(name = "id_post", nullable = false)
+    private Long postId;
+
+    @Column(name = "id_usuario", nullable = false)
+    private Long userId;
+
+    @Column(name = "id_comentario_pai")
+    private Long parentCommentId;
+
+    @Column(name = "texto", nullable = false)
     private String content;
 
-    @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
+    @Column(name = "criado_em")
+    private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "id_post", insertable = false, updatable = false)
+    private Post post;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_usuario", insertable = false, updatable = false)
     private User author;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id", nullable = false)
-    private Post post;
-
-    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ReactionUserComment> reactionsUserComment = new HashSet<>();
-
-
-    //    Autorrelação
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_comment_id")
+    @JoinColumn(name = "id_comentario_pai", insertable = false, updatable = false)
     private Comment parentComment;
 
     @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Comment> replies = new HashSet<>();
 
-//    Fim Autorelação
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ReactionUserComment> reactionsUserComment = new HashSet<>();
 
     public Comment() {
     }
@@ -49,12 +53,15 @@ public class Comment {
         this.content = content;
         this.author = author;
         this.post = post;
-        this.createdAt = new Date();
+        this.userId = author.getId();
+        this.postId = post.getId();
+        this.createdAt = LocalDateTime.now();
     }
 
     public Comment(String content, User author, Post post, Comment parentComment) {
         this(content, author, post);
         this.parentComment = parentComment;
+        this.parentCommentId = parentComment.getId();
     }
 
     public Set<ReactionUserComment> getReactions() {
@@ -64,7 +71,6 @@ public class Comment {
     public void setReactions(Set<ReactionUserComment> reactionsUserComment) {
         this.reactionsUserComment = reactionsUserComment;
     }
-
 
     public String getContent() {
         return content;
@@ -82,11 +88,35 @@ public class Comment {
         this.id = id;
     }
 
-    public Date getCreatedAt() {
+    public Long getPostId() {
+        return postId;
+    }
+
+    public void setPostId(Long postId) {
+        this.postId = postId;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public Long getParentCommentId() {
+        return parentCommentId;
+    }
+
+    public void setParentCommentId(Long parentCommentId) {
+        this.parentCommentId = parentCommentId;
+    }
+
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -96,6 +126,7 @@ public class Comment {
 
     public void setAuthor(User author) {
         this.author = author;
+        this.userId = author.getId();
     }
 
     public Post getPost() {
@@ -104,6 +135,7 @@ public class Comment {
 
     public void setPost(Post post) {
         this.post = post;
+        this.postId = post.getId();
     }
 
     public Comment getParentComment() {
@@ -112,6 +144,7 @@ public class Comment {
 
     public void setParentComment(Comment parentComment) {
         this.parentComment = parentComment;
+        this.parentCommentId = parentComment != null ? parentComment.getId() : null;
     }
 
     public Set<Comment> getReplies() {

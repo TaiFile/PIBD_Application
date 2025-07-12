@@ -26,7 +26,6 @@ public class ListCommentService {
                         comment.getId(),
                         comment.getContent(),
                         comment.getCreatedAt()
-
                 ))
                 .toList();
     }

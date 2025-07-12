@@ -1,8 +1,8 @@
--- Definição dos tipos ENUM
-CREATE TYPE papel_enum AS ENUM ('CIDADAO', 'ADMIN');
-CREATE TYPE categoria_enum AS ENUM ('RECLAMACAO', 'DUVIDA', 'REQUISICAO', 'ELOGIO', 'DENUNCIA');
-CREATE TYPE status_enum AS ENUM ('ABERTO', 'EM AVALIACAO', 'RESPONDIDO', 'FECHADO', 'ARQUIVADO');
-CREATE TYPE tipo_reacao_enum AS ENUM ('Concordo', 'Apoio', 'Revoltante', 'Urgente', 'Relevante');
+-- Definição dos tipos ENUM (comentados para usar VARCHAR)
+-- CREATE TYPE papel_enum AS ENUM ('CIDADAO', 'ADMIN');
+-- CREATE TYPE categoria_enum AS ENUM ('RECLAMACAO', 'DUVIDA', 'REQUISICAO', 'ELOGIO', 'DENUNCIA');
+-- CREATE TYPE status_enum AS ENUM ('ABERTO', 'EM AVALIACAO', 'RESPONDIDO', 'FECHADO', 'ARQUIVADO');
+-- CREATE TYPE tipo_reacao_enum AS ENUM ('Concordo', 'Apoio', 'Revoltante', 'Urgente', 'Relevante');
 
 -- Criação das Tabelas
 
@@ -10,7 +10,7 @@ CREATE TABLE Usuario (
     id SERIAL PRIMARY KEY, -- Identificador único do usuário
     email VARCHAR(255) UNIQUE NOT NULL, -- Email único para login
     senha VARCHAR(255) NOT NULL,
-    papel papel_enum NOT NULL, -- Define o tipo de usuário (CIDADÃO ou ADMIN)
+    papel VARCHAR(255) NOT NULL, -- Define o tipo de usuário (CIDADÃO ou ADMIN)
     ultima_atividade TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -38,13 +38,12 @@ CREATE TABLE Post (
     descricao TEXT,
     localizacao VARCHAR(255),
     criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    categoria categoria_enum NOT NULL, -- Categoria do post (ENUM)
-    status status_enum NOT NULL, -- Status atual do post (ENUM)
+    categoria VARCHAR(255) NOT NULL, -- Categoria do post (VARCHAR)
+    status VARCHAR(255) NOT NULL, -- Status atual do post (VARCHAR)
     CONSTRAINT fk_post_usuario FOREIGN KEY (id_usuario) REFERENCES Usuario(id) ON DELETE CASCADE
 );
 
 CREATE TABLE Midia_Post (
-    id SERIAL PRIMARY KEY, -- Identificador único da mídia
     id_post INT NOT NULL, -- Post ao qual a mídia pertence
     url_midia VARCHAR(255) NOT NULL,
     CONSTRAINT fk_midia_post FOREIGN KEY (id_post) REFERENCES Post(id) ON DELETE CASCADE
@@ -65,7 +64,7 @@ CREATE TABLE Comentario (
 CREATE TABLE Reacao_Post (
     id_usuario INT NOT NULL, -- Usuário que fez a reação
     id_post INT NOT NULL, -- Post que recebeu a reação
-    tipo tipo_reacao_enum NOT NULL, -- Tipo de reação (ENUM)
+    tipo VARCHAR(255) NOT NULL, -- Tipo de reação (VARCHAR)
     criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id_usuario, id_post), -- Garante uma reação por usuário por post
     CONSTRAINT fk_reacao_post_usuario FOREIGN KEY (id_usuario) REFERENCES Usuario(id) ON DELETE CASCADE,
@@ -75,7 +74,7 @@ CREATE TABLE Reacao_Post (
 CREATE TABLE Reacao_Comentario (
     id_usuario INT NOT NULL, -- Usuário que fez a reação
     id_comentario INT NOT NULL, -- Comentário que recebeu a reação
-    tipo tipo_reacao_enum NOT NULL, -- Tipo de reação (ENUM)
+    tipo VARCHAR(255) NOT NULL, -- Tipo de reação (VARCHAR)
     criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id_usuario, id_comentario), -- Garante uma reação por usuário por comentário
     CONSTRAINT fk_reacao_comentario_usuario FOREIGN KEY (id_usuario) REFERENCES Usuario(id) ON DELETE CASCADE,
@@ -121,10 +120,10 @@ INSERT INTO Cidadao (id, nome, data_nascimento, cpf, telefone, idade, tipo_logra
 
 INSERT INTO Post (id_usuario, titulo, texto, descricao, localizacao, categoria, status) VALUES
 (1, 'Buraco na Rua', 'Existe um grande buraco na Rua das Flores, causando problemas aos veículos.', 'Perigo na via pública', 'Rua das Flores, Centro', 'RECLAMACAO', 'ABERTO'),
-(2, 'Dúvida sobre IPTU', 'Gostaria de saber como consultar o valor do IPTU para o próximo ano.', NULL, NULL, 'DUVIDA', 'EM AVALIACAO'),
+(2, 'Dúvida sobre IPTU', 'Gostaria de saber como consultar o valor do IPTU para o próximo ano.', NULL, NULL, 'DUVIDA', 'EM_AVALIACAO'),
 (3, 'Elogio ao Serviço de Limpeza', 'Parabéns à equipe de limpeza do bairro Vila Nova, excelente trabalho!', NULL, 'Vila Nova', 'ELOGIO', 'RESPONDIDO'),
 (4, 'Denúncia de Descarte Irregular', 'Pessoas descartando lixo em terreno baldio na Rua do Comércio.', 'Lixo acumulado', 'Rua do Comércio, Industrial', 'DENUNCIA', 'ABERTO'),
-(5, 'Requisição de Poda de Árvore', 'Solicito poda de árvore que está com galhos baixos na Travessa da Paz.', NULL, 'Travessa da Paz, Jardim Primavera', 'REQUISICAO', 'EM AVALIACAO'),
+(5, 'Requisição de Poda de Árvore', 'Solicito poda de árvore que está com galhos baixos na Travessa da Paz.', NULL, 'Travessa da Paz, Jardim Primavera', 'REQUISICAO', 'EM_AVALIACAO'),
 (7, 'Problema com Iluminação Pública', 'Poste de luz queimado na Rua das Acácias, à noite fica muito escuro.', NULL, 'Rua das Acácias, Parque das Árvores', 'RECLAMACAO', 'ABERTO'),
 (8, 'Sugestão para Parque', 'Proponho a instalação de mais bancos no parque da Avenida do Sol.', NULL, 'Parque da Avenida do Sol, Nascente', 'REQUISICAO', 'ABERTO'),
 (9, 'Dúvida sobre Horário de Ônibus', 'Qual o horário do ônibus que passa na Alameda dos Ipês?', NULL, NULL, 'DUVIDA', 'RESPONDIDO'),
@@ -160,32 +159,32 @@ INSERT INTO Comentario (id_post, id_usuario, id_comentario_pai, texto) VALUES
 
 
 INSERT INTO Reacao_Post (id_usuario, id_post, tipo) VALUES
-(2, 1, 'Apoio'),
-(3, 1, 'Concordo'),
-(6, 3, 'Relevante'),
-(1, 3, 'Apoio'),
-(4, 5, 'Urgente'),
-(7, 1, 'Revoltante'),
-(8, 8, 'Apoio'),
-(9, 9, 'Concordo'),
-(11, 3, 'Apoio'),
-(12, 10, 'Urgente'),
-(5, 4, 'Revoltante'),
-(1, 8, 'Apoio');
+(2, 1, 'APOIO'),
+(3, 1, 'CONCORDO'),
+(6, 3, 'RELEVANTE'),
+(1, 3, 'APOIO'),
+(4, 5, 'URGENTE'),
+(7, 1, 'REVOLTANTE'),
+(8, 8, 'APOIO'),
+(9, 9, 'CONCORDO'),
+(11, 3, 'APOIO'),
+(12, 10, 'URGENTE'),
+(5, 4, 'REVOLTANTE'),
+(1, 8, 'APOIO');
 
 
 INSERT INTO Reacao_Comentario (id_usuario, id_comentario, tipo) VALUES
-(1, 1, 'Concordo'),
-(2, 3, 'Apoio'),
-(4, 1, 'Relevante'),
-(5, 4, 'Urgente'),
-(7, 3, 'Concordo'),
-(8, 6, 'Revoltante'),
-(9, 7, 'Apoio'),
-(11, 8, 'Relevante'),
-(12, 2, 'Concordo'),
-(3, 4, 'Revoltante'),
-(1, 9, 'Apoio');
+(1, 1, 'CONCORDO'),
+(2, 3, 'APOIO'),
+(4, 1, 'RELEVANTE'),
+(5, 4, 'URGENTE'),
+(7, 3, 'CONCORDO'),
+(8, 6, 'REVOLTANTE'),
+(9, 7, 'APOIO'),
+(11, 8, 'RELEVANTE'),
+(12, 2, 'CONCORDO'),
+(3, 4, 'REVOLTANTE'),
+(1, 9, 'APOIO');
 
 -- Procedures
 
@@ -224,7 +223,7 @@ $$;
 
 CREATE OR REPLACE PROCEDURE atualizar_status_post(
     p_id_post INT,
-    p_novo_status status_enum
+    p_novo_status VARCHAR
 )
 LANGUAGE plpgsql
 AS $$
@@ -250,7 +249,7 @@ $$;
 -- Functions
 
 CREATE OR REPLACE FUNCTION contar_posts_por_categoria(
-    p_categoria categoria_enum
+    p_categoria VARCHAR
 )
 RETURNS BIGINT
 LANGUAGE plpgsql

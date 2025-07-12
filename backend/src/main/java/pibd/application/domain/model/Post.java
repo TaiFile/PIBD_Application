@@ -4,50 +4,52 @@ import jakarta.persistence.*;
 import pibd.application.domain.enums.Category;
 import pibd.application.domain.enums.Status;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "posts")
+@Table(name = "Post")
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "id_usuario", nullable = false)
+    private Long userId;
+
+    @Column(name = "titulo", nullable = false)
     private String title;
 
-    @Column(nullable = false, length = 1000)
+    @Column(name = "texto")
     private String content;
 
-    @Column(nullable = false)
+    @Column(name = "descricao")
     private String description;
 
-    @ElementCollection
-    @CollectionTable(name = "post_media_urls", joinColumns = @JoinColumn(name = "post_id"))
-    @Column(name = "url", nullable = false)
-    private Set<String> mediaUrls = new HashSet<>();
+    @Column(name = "localizacao")
+    private String location;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false)
-    private Date createdAt;
-
-    @Column
-    private String locality;
+    @Column(name = "criado_em")
+    private LocalDateTime createdAt;
 
     @Enumerated(EnumType.STRING)
-    @Column
-    private Status status;
-
-    @Enumerated(EnumType.STRING)
-    @Column
+    @Column(name = "categoria", nullable = false)
     private Category category;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private Status status;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "id_usuario", insertable = false, updatable = false)
     private User user;
+
+    @ElementCollection
+    @CollectionTable(name = "Midia_Post", joinColumns = @JoinColumn(name = "id_post"))
+    @Column(name = "url_midia", nullable = false)
+    private Set<String> mediaUrls = new HashSet<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ReactionUserPost> reactions = new HashSet<>();
@@ -58,16 +60,16 @@ public class Post {
     public Post() {
     }
 
-    public Post(String title, String content, String description, Set<String> mediaUrls, Date createdAt, String locality, Status status, Category category, User user) {
+    public Post(String title, String content, String description, String location, LocalDateTime createdAt, Category category, Status status, User user) {
         this.title = title;
         this.content = content;
         this.description = description;
-        this.mediaUrls = mediaUrls;
+        this.location = location;
         this.createdAt = createdAt;
-        this.locality = locality;
-        this.status = status;
         this.category = category;
+        this.status = status;
         this.user = user;
+        this.userId = user.getId();
     }
 
     public Set<ReactionUserPost> getReactions() {
@@ -77,7 +79,6 @@ public class Post {
     public void setReactions(Set<ReactionUserPost> reactions) {
         this.reactions = reactions;
     }
-
 
     public Set<Comment> getComments() {
         return comments;
@@ -93,6 +94,14 @@ public class Post {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getTitle() {
@@ -119,36 +128,20 @@ public class Post {
         this.description = description;
     }
 
-    public Set<String> getMediaUrls() {
-        return mediaUrls;
+    public String getLocation() {
+        return location;
     }
 
-    public void setMediaUrls(Set<String> mediaUrls) {
-        this.mediaUrls = mediaUrls;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
-    public Date getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public String getLocality() {
-        return locality;
-    }
-
-    public void setLocality(String locality) {
-        this.locality = locality;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
     }
 
     public Category getCategory() {
@@ -159,12 +152,29 @@ public class Post {
         this.category = category;
     }
 
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
+        this.userId = user.getId();
+    }
+
+    public Set<String> getMediaUrls() {
+        return mediaUrls;
+    }
+
+    public void setMediaUrls(Set<String> mediaUrls) {
+        this.mediaUrls = mediaUrls;
     }
 
     @Override

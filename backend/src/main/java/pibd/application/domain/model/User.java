@@ -3,13 +3,15 @@ package pibd.application.domain.model;
 import jakarta.persistence.*;
 import pibd.application.domain.enums.Role;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 
 @Entity
-@Table(name = "users")
+@Table(name = "Usuario")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,12 +20,15 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column(name = "senha", nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "papel", nullable = false)
     private Role role;
+
+    @Column(name = "ultima_atividade")
+    private LocalDateTime lastActivity;
 
     @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Post> posts = new HashSet<>();
@@ -49,7 +54,7 @@ public class User {
     public User(String email, String password) {
         this.email = email;
         this.password = password;
-        this.role = Role.CITIZEN;
+        this.role = Role.CIDADAO;
     }
 
     // Getters e Setters
@@ -84,6 +89,14 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public LocalDateTime getLastActivity() {
+        return lastActivity;
+    }
+
+    public void setLastActivity(LocalDateTime lastActivity) {
+        this.lastActivity = lastActivity;
     }
 
     public Set<Post> getPosts() {

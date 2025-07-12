@@ -9,7 +9,7 @@ import pibd.application.domain.model.Post;
 import pibd.application.domain.model.User;
 import pibd.application.infra.persistence.jpa.PostJpaRepository;
 import pibd.application.infra.persistence.jpa.UserJpaRepository;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Service
 public class CreatePostService {
@@ -29,10 +29,10 @@ public class CreatePostService {
         post.setContent(request.content());
         post.setDescription(request.description());
         post.setCategory(request.category());
-        post.setLocality(request.locality());
+        post.setLocation(request.locality());
         post.setMediaUrls(request.mediaUrls());
-        post.setStatus(Status.IN_VALIDATION);
-        post.setCreatedAt(new Date());
+        post.setStatus(Status.EM_AVALIACAO);
+        post.setCreatedAt(LocalDateTime.now());
         Post savedPost = postRepository.save(post);
 
         return new PostResponseDTO(
@@ -42,7 +42,7 @@ public class CreatePostService {
                 savedPost.getDescription(),
                 savedPost.getMediaUrls(),
                 savedPost.getCreatedAt(),
-                savedPost.getLocality(),
+                savedPost.getLocation(),
                 savedPost.getStatus(),
                 savedPost.getCategory(),
                 0,
