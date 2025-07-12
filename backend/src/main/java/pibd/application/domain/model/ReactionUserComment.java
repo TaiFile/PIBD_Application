@@ -13,12 +13,6 @@ public class ReactionUserComment {
     @EmbeddedId
     private ReactionUserCommentId id;
 
-    @Column(name = "id_usuario", nullable = false)
-    private Long userId;
-
-    @Column(name = "id_comentario", nullable = false)
-    private Long commentId;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo", nullable = false)
     private ReactionType type;
@@ -28,12 +22,12 @@ public class ReactionUserComment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("userId")
-    @JoinColumn(name = "id_usuario", insertable = false, updatable = false)
+    @JoinColumn(name = "id_usuario")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("commentId")
-    @JoinColumn(name = "id_comentario", insertable = false, updatable = false)
+    @JoinColumn(name = "id_comentario")
     private Comment comment;
 
     public ReactionUserComment() {
@@ -43,9 +37,7 @@ public class ReactionUserComment {
         this.user = user;
         this.comment = comment;
         this.type = type;
-        this.userId = user.getId();
-        this.commentId = comment.getId();
-        this.id = new ReactionUserCommentId(userId, commentId);
+        this.id = new ReactionUserCommentId(user.getId(), comment.getId());
         this.createdAt = LocalDateTime.now();
     }
 
@@ -57,29 +49,16 @@ public class ReactionUserComment {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Long getCommentId() {
-        return commentId;
-    }
-
-    public void setCommentId(Long commentId) {
-        this.commentId = commentId;
-    }
-
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
-        this.userId = user.getId();
+        if (this.id == null) {
+            this.id = new ReactionUserCommentId();
+        }
+        this.id.setUserId(user.getId());
     }
 
     public Comment getComment() {
@@ -88,7 +67,10 @@ public class ReactionUserComment {
 
     public void setComment(Comment comment) {
         this.comment = comment;
-        this.commentId = comment.getId();
+        if (this.id == null) {
+            this.id = new ReactionUserCommentId();
+        }
+        this.id.setCommentId(comment.getId());
     }
 
     public ReactionType getType() {

@@ -33,6 +33,7 @@ function App() {
       setPosts(currentPosts => [newPost, ...currentPosts]);
     } catch (error) {
       console.error("Erro ao criar post:", error);
+      alert('Erro ao criar post. Tente novamente.');
     } finally {
       setIsSubmitting(false);
     }
@@ -41,22 +42,23 @@ function App() {
   const handleReactToPost = async (postId: number, reactionType: TipoReacao) => {
     // Mock do ID do usuário logado
     const userId = 1;
-    // Atualização otimista da UI: usuário só pode ter uma reação por post
-    setPosts(currentPosts => currentPosts.map(p => {
-      if (p.id === postId) {
-        return {
-          ...p,
-          reacoes: { ...p.reacoes, [userId]: reactionType },
-        };
-      }
-      return p;
-    }));
-
+    
     try {
       await createReactionToPost({ id_post: postId, tipo: reactionType, id_usuario: userId });
+      
+      // Atualização otimista da UI
+      setPosts(currentPosts => currentPosts.map(p => {
+        if (p.id === postId) {
+          return {
+            ...p,
+            reactionsCount: p.reactionsCount + 1
+          };
+        }
+        return p;
+      }));
     } catch (error) {
       console.error("Erro ao reagir ao post:", error);
-      // Reverter a UI em caso de erro (lógica mais complexa, omitida para simplicidade)
+      alert('Erro ao reagir ao post. Tente novamente.');
     }
   };
 
@@ -65,15 +67,24 @@ function App() {
       <header className="bg-white shadow-md">
         <nav className="container mx-auto px-6 py-4">
           <h1 className="text-3xl font-bold text-blue-600">Portal do Cidadão</h1>
+          <p className="text-gray-600 mt-1">Compartilhe suas observações e solicitações com a prefeitura</p>
         </nav>
       </header>
 
       <main className="container mx-auto px-6 py-8">
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <CreatePostForm onSubmit={handleCreatePost} isSubmitting={isSubmitting} />
 
           {isLoading ? (
-            <p className="text-center text-gray-500">Carregando publicações...</p>
+            <div className="text-center py-8">
+              <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+              <p className="text-gray-500 mt-2">Carregando publicações...</p>
+            </div>
+          ) : posts.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-gray-500">Nenhuma publicação encontrada.</p>
+              <p className="text-gray-400 text-sm">Seja o primeiro a criar uma publicação!</p>
+            </div>
           ) : (
             <div>
               {posts.map(post => (

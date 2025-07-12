@@ -14,12 +14,6 @@ public class ReactionUserPost {
     @EmbeddedId
     private ReactionUserPostId id;
 
-    @Column(name = "id_usuario", nullable = false)
-    private Long userId;
-
-    @Column(name = "id_post", nullable = false)
-    private Long postId;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo", nullable = false)
     private ReactionType type;
@@ -29,12 +23,12 @@ public class ReactionUserPost {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("userId")
-    @JoinColumn(name = "id_usuario", insertable = false, updatable = false)
+    @JoinColumn(name = "id_usuario")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("postId")
-    @JoinColumn(name = "id_post", insertable = false, updatable = false)
+    @JoinColumn(name = "id_post")
     private Post post;
 
     public ReactionUserPost() {
@@ -44,9 +38,7 @@ public class ReactionUserPost {
         this.user = user;
         this.post = post;
         this.type = type;
-        this.userId = user.getId();
-        this.postId = post.getId();
-        this.id = new ReactionUserPostId(userId, postId);
+        this.id = new ReactionUserPostId(user.getId(), post.getId());
         this.createdAt = LocalDateTime.now();
     }
 
@@ -59,29 +51,16 @@ public class ReactionUserPost {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Long getPostId() {
-        return postId;
-    }
-
-    public void setPostId(Long postId) {
-        this.postId = postId;
-    }
-
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
-        this.userId = user.getId();
+        if (this.id == null) {
+            this.id = new ReactionUserPostId();
+        }
+        this.id.setUserId(user.getId());
     }
 
     public Post getPost() {
@@ -90,7 +69,10 @@ public class ReactionUserPost {
 
     public void setPost(Post post) {
         this.post = post;
-        this.postId = post.getId();
+        if (this.id == null) {
+            this.id = new ReactionUserPostId();
+        }
+        this.id.setPostId(post.getId());
     }
 
     public ReactionType getType() {

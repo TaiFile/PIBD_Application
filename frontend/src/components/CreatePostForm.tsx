@@ -16,21 +16,32 @@ const categorias: Categoria[] = [
 ];
 
 const CreatePostForm: React.FC<CreatePostFormProps> = ({ onSubmit, isSubmitting }) => {
-  const [titulo, setTitulo] = useState('');
-  const [texto, setTexto] = useState('');
-  const [categoria, setCategoria] = useState<Categoria>(Categoria.RECLAMACAO);
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [description, setDescription] = useState('');
+  const [locality, setLocality] = useState('');
+  const [category, setCategory] = useState<Categoria>(Categoria.RECLAMACAO);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!titulo.trim() || !texto.trim()) {
-      alert('Título e texto são obrigatórios.');
+    if (!title.trim() || !content.trim() || !description.trim() || !locality.trim()) {
+      alert('Todos os campos são obrigatórios.');
       return;
     }
-    // Mock do ID do usuário logado. Em um app real, viria do contexto de autenticação.
-    const id_usuario = 1; 
-    onSubmit({ titulo, texto, categoria, id_usuario });
-    setTitulo('');
-    setTexto('');
+    
+    onSubmit({ 
+      title, 
+      content, 
+      description, 
+      locality, 
+      category,
+      mediaUrls: []
+    });
+    
+    setTitle('');
+    setContent('');
+    setDescription('');
+    setLocality('');
   };
 
   return (
@@ -38,27 +49,54 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({ onSubmit, isSubmitting 
       <h2 className="text-2xl font-bold mb-4 text-gray-800">Crie uma nova publicação</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700 mb-2">Título</label>
           <input
             type="text"
             placeholder="Título da sua publicação"
-            value={titulo}
-            onChange={(e) => setTitulo(e.target.value)}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            minLength={5}
+            maxLength={100}
           />
         </div>
         <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700 mb-2">Conteúdo</label>
           <textarea
-            placeholder="O que você está pensando?"
-            value={texto}
-            onChange={(e) => setTexto(e.target.value)}
+            placeholder="Descreva sua solicitação ou observação"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
             rows={4}
             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            maxLength={1000}
           />
         </div>
         <div className="mb-4">
-           <select
-            value={categoria}
-            onChange={(e) => setCategoria(e.target.value as Categoria)}
+          <label className="block text-sm font-medium text-gray-700 mb-2">Descrição</label>
+          <textarea
+            placeholder="Descrição adicional (opcional)"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            rows={2}
+            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            maxLength={255}
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700 mb-2">Localização</label>
+          <input
+            type="text"
+            placeholder="Local onde ocorreu o fato"
+            value={locality}
+            onChange={(e) => setLocality(e.target.value)}
+            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700 mb-2">Categoria</label>
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value as Categoria)}
             className="w-full px-4 py-2 border rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             {categorias.map(cat => (

@@ -8,10 +8,10 @@ import java.util.Objects;
 @Embeddable
 public class ReactionUserPostId implements Serializable {
 
-    @Column(name = "user_id")
+    @Column(name = "id_usuario")
     private Long userId;
 
-    @Column(name = "post_id")
+    @Column(name = "id_post")
     private Long postId;
 
     public ReactionUserPostId() {
@@ -21,7 +21,6 @@ public class ReactionUserPostId implements Serializable {
         this.userId = userId;
         this.postId = postId;
     }
-
 
     public Long getUserId() {
         return userId;

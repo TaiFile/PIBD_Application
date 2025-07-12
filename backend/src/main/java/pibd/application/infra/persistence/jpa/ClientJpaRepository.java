@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import pibd.application.domain.model.Citizen;
 
 @Repository
-public interface CitizenJpaRepository extends JpaRepository<Citizen, Long> {
+public interface ClientJpaRepository extends JpaRepository<Citizen, Long> {
 }

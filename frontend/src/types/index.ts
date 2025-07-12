@@ -6,38 +6,63 @@ export enum Categoria {
   DENUNCIA = 'DENUNCIA',
 }
 
+export enum Status {
+  ABERTO = 'ABERTO',
+  EM_AVALIACAO = 'EM_AVALIACAO',
+  RESPONDIDO = 'RESPONDIDO',
+  FECHADO = 'FECHADO',
+  ARQUIVADO = 'ARQUIVADO',
+}
+
 export enum TipoReacao {
-  Concordo = 'Concordo',
-  Apoio = 'Apoio',
-  Revoltante = 'Revoltante',
-  Urgente = 'Urgente',
-  Relevante = 'Relevante',
+  CONCORDO = 'CONCORDO',
+  APOIO = 'APOIO',
+  REVOLTANTE = 'REVOLTANTE',
+  URGENTE = 'URGENTE',
+  RELEVANTE = 'RELEVANTE',
 }
 
 export interface User {
   id: number;
-  nome: string;
+  email: string;
+  papel: string;
 }
 
 export interface Post {
   id: number;
-  titulo: string;
-  texto: string;
-  criado_em: string;
-  categoria: Categoria;
-  autor: User;
-  reacoes: { [userId: number]: TipoReacao };
+  title: string;
+  content: string;
+  description: string;
+  location: string;
+  createdAt: string;
+  category: Categoria;
+  status: Status;
+  mediaUrls: string[];
+  reactionsCount: number;
+  commentsCount: number;
 }
 
 export interface NewPost {
-  titulo: string;
-  texto: string;
-  categoria: Categoria;
-  id_usuario: number;
+  title: string;
+  content: string;
+  description: string;
+  locality: string;
+  category: Categoria;
+  mediaUrls?: string[];
 }
 
 export interface NewReaction {
-    id_usuario: number;
-    id_post: number;
-    tipo: TipoReacao;
+  id_usuario: number;
+  id_post: number;
+  tipo: TipoReacao;
+}
+
+export interface Comment {
+  id: number;
+  content: string;
+  createdAt: string;
+}
+
+export interface NewComment {
+  content: string;
 }
