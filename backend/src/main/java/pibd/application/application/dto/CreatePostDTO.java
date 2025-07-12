@@ -15,7 +15,6 @@ public record CreatePostDTO(
         @Size(max = 1000, message = "O conteúdo não pode exceder 1000 caracteres.")
         String content,
 
-        @NotBlank(message = "A descrição é obrigatória.")
         @Size(max = 255, message = "A descrição não pode exceder 255 caracteres.")
         String description,
 

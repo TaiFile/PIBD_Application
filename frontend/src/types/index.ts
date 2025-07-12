@@ -32,7 +32,7 @@ export interface Post {
   id: number;
   title: string;
   content: string;
-  description: string;
+  description?: string;
   location: string;
   createdAt: string;
   category: Categoria;
@@ -46,7 +46,7 @@ export interface Post {
 export interface NewPost {
   title: string;
   content: string;
-  description: string;
+  description?: string;
   locality: string;
   category: Categoria;
   mediaUrls?: string[];

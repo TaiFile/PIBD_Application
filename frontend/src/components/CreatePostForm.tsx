@@ -24,15 +24,15 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({ onSubmit, isSubmitting 
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title.trim() || !content.trim() || !description.trim() || !locality.trim()) {
-      alert('Todos os campos são obrigatórios.');
+    if (!title.trim() || !content.trim() || !locality.trim()) {
+      alert('Título, conteúdo e localização são obrigatórios.');
       return;
     }
     
     onSubmit({ 
       title, 
       content, 
-      description, 
+      description: description.trim() || undefined, 
       locality, 
       category,
       mediaUrls: []
@@ -72,7 +72,7 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({ onSubmit, isSubmitting 
           />
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-2">Descrição</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Descrição (opcional)</label>
           <textarea
             placeholder="Descrição adicional (opcional)"
             value={description}
