@@ -5,11 +5,9 @@ import org.springframework.stereotype.Service;
 import pibd.application.application.dto.PostResponseDTO;
 import pibd.application.domain.model.Post;
 import pibd.application.domain.model.ReactionUserPost;
-import pibd.application.domain.model.User;
 import pibd.application.domain.utils.ReactionUserPostId;
 import pibd.application.infra.persistence.jpa.PostJpaRepository;
 import pibd.application.infra.persistence.jpa.ReactionUserPostJpaRepository;
-import pibd.application.infra.persistence.jpa.UserJpaRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,9 +19,6 @@ public class ListPostService {
 
     @Autowired
     private ReactionUserPostJpaRepository reactionRepository;
-
-    @Autowired
-    private UserJpaRepository userRepository;
 
     public List<PostResponseDTO> findAll(Long userId) {
         List<Post> posts = postRepository.findAll();
