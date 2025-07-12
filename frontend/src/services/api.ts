@@ -12,7 +12,7 @@ const apiClient = axios.create({
 const MOCK_USER_ID = 1;
 
 export const getPosts = async (): Promise<Post[]> => {
-  const response = await apiClient.get<Post[]>('/posts');
+  const response = await apiClient.get<Post[]>(`/posts?userId=${MOCK_USER_ID}`);
   return response.data;
 };
 

@@ -40,6 +40,7 @@ export interface Post {
   mediaUrls: string[];
   reactionsCount: number;
   commentsCount: number;
+  userReaction?: TipoReacao | null; // Reação do usuário atual (se houver)
 }
 
 export interface NewPost {

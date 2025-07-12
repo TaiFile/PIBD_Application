@@ -43,15 +43,24 @@ function App() {
     // Mock do ID do usuário logado
     const userId = 1;
     
+    // Verificar se o usuário já reagiu com a mesma reação
+    const currentPost = posts.find(p => p.id === postId);
+    if (currentPost?.userReaction === reactionType) {
+      // Se clicou na mesma reação, não faz nada
+      return;
+    }
+    
     try {
       await createReactionToPost({ id_post: postId, tipo: reactionType, id_usuario: userId });
       
       // Atualização otimista da UI
       setPosts(currentPosts => currentPosts.map(p => {
         if (p.id === postId) {
+          const wasFirstReaction = p.userReaction === null || p.userReaction === undefined;
           return {
             ...p,
-            reactionsCount: p.reactionsCount + 1
+            reactionsCount: wasFirstReaction ? p.reactionsCount + 1 : p.reactionsCount, // Só incrementa se for primeira reação
+            userReaction: reactionType
           };
         }
         return p;

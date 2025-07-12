@@ -45,8 +45,9 @@ public class CreatePostService {
                 savedPost.getLocation(),
                 savedPost.getStatus(),
                 savedPost.getCategory(),
-                0,
-                0
+                0, // reactionsCount - post novo não tem reações
+                0, // commentsCount - post novo não tem comentários
+                null // userReaction - usuário não reagiu ao próprio post ainda
         );
     }
 }
