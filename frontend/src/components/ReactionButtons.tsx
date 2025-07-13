@@ -23,40 +23,78 @@ const reactionLabels: { [key in TipoReacao]: string } = {
   [TipoReacao.RELEVANTE]: 'Relevante',
 };
 
+const reactionColors: { [key in TipoReacao]: { bg: string; text: string; border: string; hover: string } } = {
+  [TipoReacao.CONCORDO]: { 
+    bg: 'bg-green-50', 
+    text: 'text-green-700', 
+    border: 'border-green-200',
+    hover: 'hover:bg-green-100'
+  },
+  [TipoReacao.APOIO]: { 
+    bg: 'bg-red-50', 
+    text: 'text-red-700', 
+    border: 'border-red-200',
+    hover: 'hover:bg-red-100'
+  },
+  [TipoReacao.REVOLTANTE]: { 
+    bg: 'bg-orange-50', 
+    text: 'text-orange-700', 
+    border: 'border-orange-200',
+    hover: 'hover:bg-orange-100'
+  },
+  [TipoReacao.URGENTE]: { 
+    bg: 'bg-yellow-50', 
+    text: 'text-yellow-700', 
+    border: 'border-yellow-200',
+    hover: 'hover:bg-yellow-100'
+  },
+  [TipoReacao.RELEVANTE]: { 
+    bg: 'bg-blue-50', 
+    text: 'text-blue-700', 
+    border: 'border-blue-200',
+    hover: 'hover:bg-blue-100'
+  },
+};
+
 const ReactionButtons: React.FC<ReactionButtonsProps> = ({ post, onReact }) => {
   const userReaction = post.userReaction;
 
   return (
-    <div className="flex items-center space-x-2 mt-4 pt-4 border-t border-gray-200">
-      {Object.values(TipoReacao).map(type => {
-        const isActive = userReaction === type;
-        
-        return (
-          <button
-            key={type}
-            onClick={() => onReact(post.id, type)}
-            className={`flex items-center space-x-2 text-sm p-2 rounded-md transition-colors ${
-              isActive 
-                ? 'bg-blue-600 text-white shadow-md hover:bg-blue-700' 
-                : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
-            }`}
-            title={
-              isActive 
-                ? `Você reagiu com ${reactionLabels[type]} - Clique para trocar`
-                : `Clique para reagir com ${reactionLabels[type]}`
-            }
-          >
-            <span className="text-xl">{reactionEmojis[type]}</span>
-            <span className="font-semibold">{reactionLabels[type]}</span>
-          </button>
-        );
-      })}
-      
-      {userReaction && (
-        <div className="ml-auto text-sm text-gray-500">
-          Você reagiu com {reactionLabels[userReaction]}
-        </div>
-      )}
+    <div className="space-y-4">
+      {/* Botões de Reação */}
+      <div className="flex flex-wrap gap-2">
+        {Object.values(TipoReacao).map(type => {
+          const isActive = userReaction === type;
+          const colors = reactionColors[type];
+          
+          return (
+            <button
+              key={type}
+              onClick={() => onReact(post.id, type)}
+              className={`group relative flex items-center space-x-2 px-4 py-2.5 rounded-xl border-2 transition-all duration-200 font-medium text-sm btn-hover focus-ring ${
+                isActive 
+                  ? `${colors.bg} ${colors.text} ${colors.border} shadow-md transform scale-105` 
+                  : `bg-white border-gray-200 text-gray-600 hover:border-gray-300 hover:shadow-sm ${colors.hover}`
+              }`}
+              title={
+                isActive 
+                  ? `Você reagiu com ${reactionLabels[type]} - Clique para trocar`
+                  : `Clique para reagir com ${reactionLabels[type]}`
+              }
+            >
+              <span className="text-xl transition-transform group-hover:scale-110">
+                {reactionEmojis[type]}
+              </span>
+              <span className="font-semibold">{reactionLabels[type]}</span>
+              
+              {/* Indicador de seleção */}
+              {isActive && (
+                <div className="absolute -top-1 -right-1 w-3 h-3 bg-blue-600 rounded-full border-2 border-white"></div>
+              )}
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 };
