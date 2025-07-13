@@ -8,27 +8,27 @@ import pibd.application.domain.utils.ReactionUserPostId;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "Reacao_Post")
+@Table(name = "post_reactions")
 public class ReactionUserPost {
 
     @EmbeddedId
     private ReactionUserPostId id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "tipo", nullable = false)
+    @Column(nullable = false)
     private ReactionType type;
 
-    @Column(name = "criado_em")
+    @Column
     private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("userId")
-    @JoinColumn(name = "id_usuario")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("postId")
-    @JoinColumn(name = "id_post")
+    @JoinColumn(name = "post_id")
     private Post post;
 
     public ReactionUserPost() {

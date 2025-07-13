@@ -1,10 +1,10 @@
 package pibd.application.domain.enums;
 
 public enum Status {
-    ABERTO,
-    EM_AVALIACAO,
-    RESPONDIDO,
-    FECHADO,
-    ARQUIVADO;
+    OPEN,
+    UNDER_REVIEW,
+    RESPONDED,
+    CLOSED,
+    ARCHIVED;
 }
 

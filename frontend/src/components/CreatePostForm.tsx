@@ -8,19 +8,27 @@ interface CreatePostFormProps {
 }
 
 const categorias: Categoria[] = [
-  Categoria.RECLAMACAO,
-  Categoria.DUVIDA,
-  Categoria.REQUISICAO,
-  Categoria.ELOGIO,
-  Categoria.DENUNCIA,
+  Categoria.COMPLAINT,
+  Categoria.QUESTION,
+  Categoria.REQUEST,
+  Categoria.COMPLIMENT,
+  Categoria.DENUNCIATION,
 ];
 
 const categoriaIcons: { [key in Categoria]: string } = {
-  [Categoria.RECLAMACAO]: '⚠️',
-  [Categoria.DUVIDA]: '❓',
-  [Categoria.REQUISICAO]: '📋',
-  [Categoria.ELOGIO]: '⭐',
-  [Categoria.DENUNCIA]: '🚨',
+  [Categoria.COMPLAINT]: '⚠️',
+  [Categoria.QUESTION]: '❓',
+  [Categoria.REQUEST]: '📋',
+  [Categoria.COMPLIMENT]: '⭐',
+  [Categoria.DENUNCIATION]: '🚨',
+};
+
+const categoriaLabels: { [key in Categoria]: string } = {
+  [Categoria.COMPLAINT]: 'Reclamação',
+  [Categoria.QUESTION]: 'Dúvida',
+  [Categoria.REQUEST]: 'Requisição',
+  [Categoria.COMPLIMENT]: 'Elogio',
+  [Categoria.DENUNCIATION]: 'Denúncia',
 };
 
 const CreatePostForm: React.FC<CreatePostFormProps> = ({ onSubmit, isSubmitting }) => {
@@ -28,7 +36,7 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({ onSubmit, isSubmitting 
   const [content, setContent] = useState('');
   const [description, setDescription] = useState('');
   const [locality, setLocality] = useState('');
-  const [category, setCategory] = useState<Categoria>(Categoria.RECLAMACAO);
+  const [category, setCategory] = useState<Categoria>(Categoria.COMPLAINT);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -116,7 +124,7 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({ onSubmit, isSubmitting 
                   }`}
                 >
                   <span className="text-2xl">{categoriaIcons[cat]}</span>
-                  <span className="text-xs font-medium">{cat}</span>
+                  <span className="text-xs font-medium">{categoriaLabels[cat]}</span>
                 </button>
               ))}
             </div>

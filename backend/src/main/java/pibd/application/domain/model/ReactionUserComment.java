@@ -7,27 +7,27 @@ import pibd.application.domain.utils.ReactionUserCommentId;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "Reacao_Comentario")
+@Table(name = "comment_reactions")
 public class ReactionUserComment {
 
     @EmbeddedId
     private ReactionUserCommentId id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "tipo", nullable = false)
+    @Column(nullable = false)
     private ReactionType type;
 
-    @Column(name = "criado_em")
+    @Column
     private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("userId")
-    @JoinColumn(name = "id_usuario")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("commentId")
-    @JoinColumn(name = "id_comentario")
+    @JoinColumn(name = "comment_id")
     private Comment comment;
 
     public ReactionUserComment() {

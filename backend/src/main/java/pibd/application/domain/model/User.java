@@ -10,7 +10,7 @@ import java.util.Set;
 
 
 @Entity
-@Table(name = "Usuario")
+@Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User {
     @Id
@@ -20,14 +20,14 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(name = "senha", nullable = false)
+    @Column(nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "papel", nullable = false)
+    @Column(nullable = false)
     private Role role;
 
-    @Column(name = "ultima_atividade")
+    @Column
     private LocalDateTime lastActivity;
 
     @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL, orphanRemoval = true)
@@ -54,7 +54,7 @@ public class User {
     public User(String email, String password) {
         this.email = email;
         this.password = password;
-        this.role = Role.CIDADAO;
+        this.role = Role.CITIZEN;
     }
 
     // Getters e Setters

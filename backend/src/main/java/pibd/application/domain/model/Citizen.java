@@ -5,40 +5,40 @@ import java.sql.Date;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Cidadao")
+@Table(name = "citizens")
 public class Citizen extends User{
 
-    @Column(name = "nome")
+    @Column
     private String name;
 
-    @Column(name = "data_nascimento")
+    @Column
     private Date birthDate;
 
-    @Column(name = "cpf", unique = true)
+    @Column(unique = true)
     private String cpf;
 
-    @Column(name = "telefone")
+    @Column
     private String phone;
     
-    @Column(name = "idade")
+    @Column
     private Integer age;
 
-    @Column(name = "tipo_logradouro")
+    @Column
     private String addressType;
 
-    @Column(name = "logradouro")
+    @Column
     private String street;
 
-    @Column(name = "numero")
+    @Column
     private String number;
 
-    @Column(name = "complemento")
+    @Column
     private String complement;
 
-    @Column(name = "bairro")
+    @Column
     private String neighborhood;
 
-    @Column(name = "cep")
+    @Column
     private String cep;
 
     public Citizen() {

@@ -6,38 +6,32 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 @Entity
-@Table(name = "Comentario")
+@Table(name = "comments")
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "id_post", nullable = false)
-    private Long postId;
-
-    @Column(name = "id_usuario", nullable = false)
-    private Long userId;
-
-    @Column(name = "id_comentario_pai")
-    private Long parentCommentId;
-
-    @Column(name = "texto", nullable = false)
+    @Column(nullable = false)
     private String content;
 
-    @Column(name = "criado_em")
+    @CreationTimestamp
+    @Column
     private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_post", insertable = false, updatable = false)
+    @JoinColumn(name = "post_id")
     private Post post;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_usuario", insertable = false, updatable = false)
+    @JoinColumn(name = "user_id")
     private User author;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_comentario_pai", insertable = false, updatable = false)
+    @JoinColumn(name = "parent_comment_id")
     private Comment parentComment;
 
     @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -53,15 +47,12 @@ public class Comment {
         this.content = content;
         this.author = author;
         this.post = post;
-        this.userId = author.getId();
-        this.postId = post.getId();
         this.createdAt = LocalDateTime.now();
     }
 
     public Comment(String content, User author, Post post, Comment parentComment) {
         this(content, author, post);
         this.parentComment = parentComment;
-        this.parentCommentId = parentComment.getId();
     }
 
     public Set<ReactionUserComment> getReactions() {
@@ -88,30 +79,6 @@ public class Comment {
         this.id = id;
     }
 
-    public Long getPostId() {
-        return postId;
-    }
-
-    public void setPostId(Long postId) {
-        this.postId = postId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Long getParentCommentId() {
-        return parentCommentId;
-    }
-
-    public void setParentCommentId(Long parentCommentId) {
-        this.parentCommentId = parentCommentId;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -126,7 +93,6 @@ public class Comment {
 
     public void setAuthor(User author) {
         this.author = author;
-        this.userId = author.getId();
     }
 
     public Post getPost() {
@@ -135,7 +101,6 @@ public class Comment {
 
     public void setPost(Post post) {
         this.post = post;
-        this.postId = post.getId();
     }
 
     public Comment getParentComment() {
@@ -144,7 +109,6 @@ public class Comment {
 
     public void setParentComment(Comment parentComment) {
         this.parentComment = parentComment;
-        this.parentCommentId = parentComment != null ? parentComment.getId() : null;
     }
 
     public Set<Comment> getReplies() {

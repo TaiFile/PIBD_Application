@@ -8,47 +8,47 @@ interface ReactionButtonsProps {
 }
 
 const reactionEmojis: { [key in TipoReacao]: string } = {
-  [TipoReacao.CONCORDO]: '👍',
-  [TipoReacao.APOIO]: '❤️',
-  [TipoReacao.REVOLTANTE]: '😡',
-  [TipoReacao.URGENTE]: '🚨',
-  [TipoReacao.RELEVANTE]: '💡',
+  [TipoReacao.AGREE]: '👍',
+  [TipoReacao.SUPPORT]: '❤️',
+  [TipoReacao.OUTRAGEOUS]: '😡',
+  [TipoReacao.URGENT]: '🚨',
+  [TipoReacao.RELEVANT]: '💡',
 };
 
 const reactionLabels: { [key in TipoReacao]: string } = {
-  [TipoReacao.CONCORDO]: 'Concordo',
-  [TipoReacao.APOIO]: 'Apoio',
-  [TipoReacao.REVOLTANTE]: 'Revoltante',
-  [TipoReacao.URGENTE]: 'Urgente',
-  [TipoReacao.RELEVANTE]: 'Relevante',
+  [TipoReacao.AGREE]: 'Concordo',
+  [TipoReacao.SUPPORT]: 'Apoio',
+  [TipoReacao.OUTRAGEOUS]: 'Revoltante',
+  [TipoReacao.URGENT]: 'Urgente',
+  [TipoReacao.RELEVANT]: 'Relevante',
 };
 
 const reactionColors: { [key in TipoReacao]: { bg: string; text: string; border: string; hover: string } } = {
-  [TipoReacao.CONCORDO]: { 
+  [TipoReacao.AGREE]: { 
     bg: 'bg-green-50', 
     text: 'text-green-700', 
     border: 'border-green-200',
     hover: 'hover:bg-green-100'
   },
-  [TipoReacao.APOIO]: { 
+  [TipoReacao.SUPPORT]: { 
     bg: 'bg-red-50', 
     text: 'text-red-700', 
     border: 'border-red-200',
     hover: 'hover:bg-red-100'
   },
-  [TipoReacao.REVOLTANTE]: { 
+  [TipoReacao.OUTRAGEOUS]: { 
     bg: 'bg-orange-50', 
     text: 'text-orange-700', 
     border: 'border-orange-200',
     hover: 'hover:bg-orange-100'
   },
-  [TipoReacao.URGENTE]: { 
+  [TipoReacao.URGENT]: { 
     bg: 'bg-yellow-50', 
     text: 'text-yellow-700', 
     border: 'border-yellow-200',
     hover: 'hover:bg-yellow-100'
   },
-  [TipoReacao.RELEVANTE]: { 
+  [TipoReacao.RELEVANT]: { 
     bg: 'bg-blue-50', 
     text: 'text-blue-700', 
     border: 'border-blue-200',

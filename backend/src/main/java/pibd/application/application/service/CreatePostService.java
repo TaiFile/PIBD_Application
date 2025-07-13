@@ -31,7 +31,7 @@ public class CreatePostService {
         post.setCategory(request.category());
         post.setLocation(request.locality());
         post.setMediaUrls(request.mediaUrls());
-        post.setStatus(Status.EM_AVALIACAO);
+        post.setStatus(Status.OPEN);
         post.setCreatedAt(LocalDateTime.now());
         Post savedPost = postRepository.save(post);
 

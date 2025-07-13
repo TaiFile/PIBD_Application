@@ -9,46 +9,46 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 @Entity
-@Table(name = "Post")
+@Table(name = "posts")
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "id_usuario", nullable = false)
-    private Long userId;
-
-    @Column(name = "titulo", nullable = false)
+    @Column(nullable = false)
     private String title;
 
-    @Column(name = "texto")
+    @Column
     private String content;
 
-    @Column(name = "descricao")
+    @Column
     private String description;
 
-    @Column(name = "localizacao")
+    @Column
     private String location;
 
-    @Column(name = "criado_em")
+    @CreationTimestamp
+    @Column
     private LocalDateTime createdAt;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "categoria", nullable = false)
+    @Column(nullable = false)
     private Category category;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
+    @Column(nullable = false)
     private Status status;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_usuario", insertable = false, updatable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ElementCollection
-    @CollectionTable(name = "Midia_Post", joinColumns = @JoinColumn(name = "id_post"))
-    @Column(name = "url_midia", nullable = false)
+    @CollectionTable(joinColumns = @JoinColumn)
+    @Column(name = "media_url")
     private Set<String> mediaUrls = new HashSet<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -69,7 +69,6 @@ public class Post {
         this.category = category;
         this.status = status;
         this.user = user;
-        this.userId = user.getId();
     }
 
     public Set<ReactionUserPost> getReactions() {
@@ -94,14 +93,6 @@ public class Post {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public String getTitle() {
@@ -166,7 +157,6 @@ public class Post {
 
     public void setUser(User user) {
         this.user = user;
-        this.userId = user.getId();
     }
 
     public Set<String> getMediaUrls() {

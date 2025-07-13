@@ -9,27 +9,43 @@ interface PostCardProps {
 }
 
 const categoriaCores: { [key in Categoria]: { bg: string; text: string; border: string } } = {
-  [Categoria.RECLAMACAO]: { bg: 'bg-red-50', text: 'text-red-700', border: 'border-red-200' },
-  [Categoria.DUVIDA]: { bg: 'bg-yellow-50', text: 'text-yellow-700', border: 'border-yellow-200' },
-  [Categoria.REQUISICAO]: { bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-200' },
-  [Categoria.ELOGIO]: { bg: 'bg-green-50', text: 'text-green-700', border: 'border-green-200' },
-  [Categoria.DENUNCIA]: { bg: 'bg-purple-50', text: 'text-purple-700', border: 'border-purple-200' },
+  [Categoria.COMPLAINT]: { bg: 'bg-red-50', text: 'text-red-700', border: 'border-red-200' },
+  [Categoria.QUESTION]: { bg: 'bg-yellow-50', text: 'text-yellow-700', border: 'border-yellow-200' },
+  [Categoria.REQUEST]: { bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-200' },
+  [Categoria.COMPLIMENT]: { bg: 'bg-green-50', text: 'text-green-700', border: 'border-green-200' },
+  [Categoria.DENUNCIATION]: { bg: 'bg-purple-50', text: 'text-purple-700', border: 'border-purple-200' },
 };
 
 const statusCores: { [key in Status]: { bg: string; text: string; border: string } } = {
-  [Status.ABERTO]: { bg: 'bg-green-50', text: 'text-green-700', border: 'border-green-200' },
-  [Status.EM_AVALIACAO]: { bg: 'bg-yellow-50', text: 'text-yellow-700', border: 'border-yellow-200' },
-  [Status.RESPONDIDO]: { bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-200' },
-  [Status.FECHADO]: { bg: 'bg-gray-50', text: 'text-gray-700', border: 'border-gray-200' },
-  [Status.ARQUIVADO]: { bg: 'bg-purple-50', text: 'text-purple-700', border: 'border-purple-200' },
+  [Status.OPEN]: { bg: 'bg-green-50', text: 'text-green-700', border: 'border-green-200' },
+  [Status.UNDER_REVIEW]: { bg: 'bg-yellow-50', text: 'text-yellow-700', border: 'border-yellow-200' },
+  [Status.RESPONDED]: { bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-200' },
+  [Status.CLOSED]: { bg: 'bg-gray-50', text: 'text-gray-700', border: 'border-gray-200' },
+  [Status.ARCHIVED]: { bg: 'bg-purple-50', text: 'text-purple-700', border: 'border-purple-200' },
 };
 
 const categoriaIcons: { [key in Categoria]: string } = {
-  [Categoria.RECLAMACAO]: '⚠️',
-  [Categoria.DUVIDA]: '❓',
-  [Categoria.REQUISICAO]: '📋',
-  [Categoria.ELOGIO]: '⭐',
-  [Categoria.DENUNCIA]: '🚨',
+  [Categoria.COMPLAINT]: '⚠️',
+  [Categoria.QUESTION]: '❓',
+  [Categoria.REQUEST]: '📋',
+  [Categoria.COMPLIMENT]: '⭐',
+  [Categoria.DENUNCIATION]: '🚨',
+};
+
+const categoriaLabels: { [key in Categoria]: string } = {
+  [Categoria.COMPLAINT]: 'Reclamação',
+  [Categoria.QUESTION]: 'Dúvida',
+  [Categoria.REQUEST]: 'Requisição',
+  [Categoria.COMPLIMENT]: 'Elogio',
+  [Categoria.DENUNCIATION]: 'Denúncia',
+};
+
+const statusLabels: { [key in Status]: string } = {
+  [Status.OPEN]: 'Aberto',
+  [Status.UNDER_REVIEW]: 'Em Avaliação',
+  [Status.RESPONDED]: 'Respondido',
+  [Status.CLOSED]: 'Fechado',
+  [Status.ARCHIVED]: 'Arquivado',
 };
 
 const PostCard: React.FC<PostCardProps> = ({ post, onReact }) => {
@@ -78,10 +94,10 @@ const PostCard: React.FC<PostCardProps> = ({ post, onReact }) => {
           <div className="flex gap-2">
             <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border ${categoriaCores[post.category].bg} ${categoriaCores[post.category].text} ${categoriaCores[post.category].border}`}>
               <span className="mr-1">{categoriaIcons[post.category]}</span>
-              {post.category}
+              {categoriaLabels[post.category]}
             </span>
             <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border ${statusCores[post.status].bg} ${statusCores[post.status].text} ${statusCores[post.status].border}`}>
-              {post.status}
+              {statusLabels[post.status]}
             </span>
           </div>
         </div>
