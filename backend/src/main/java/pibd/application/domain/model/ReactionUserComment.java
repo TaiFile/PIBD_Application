@@ -4,12 +4,21 @@ import jakarta.persistence.*;
 import pibd.application.domain.enums.ReactionType;
 import pibd.application.domain.utils.ReactionUserCommentId;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "comment_reactions")
 public class ReactionUserComment {
 
     @EmbeddedId
     private ReactionUserCommentId id;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ReactionType type;
+
+    @Column
+    private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("userId")
@@ -21,10 +30,6 @@ public class ReactionUserComment {
     @JoinColumn(name = "comment_id")
     private Comment comment;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private ReactionType type;
-
     public ReactionUserComment() {
     }
 
@@ -33,6 +38,7 @@ public class ReactionUserComment {
         this.comment = comment;
         this.type = type;
         this.id = new ReactionUserCommentId(user.getId(), comment.getId());
+        this.createdAt = LocalDateTime.now();
     }
 
     public ReactionUserCommentId getId() {
@@ -49,6 +55,10 @@ public class ReactionUserComment {
 
     public void setUser(User user) {
         this.user = user;
+        if (this.id == null) {
+            this.id = new ReactionUserCommentId();
+        }
+        this.id.setUserId(user.getId());
     }
 
     public Comment getComment() {
@@ -57,6 +67,10 @@ public class ReactionUserComment {
 
     public void setComment(Comment comment) {
         this.comment = comment;
+        if (this.id == null) {
+            this.id = new ReactionUserCommentId();
+        }
+        this.id.setCommentId(comment.getId());
     }
 
     public ReactionType getType() {
@@ -65,5 +79,13 @@ public class ReactionUserComment {
 
     public void setType(ReactionType type) {
         this.type = type;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

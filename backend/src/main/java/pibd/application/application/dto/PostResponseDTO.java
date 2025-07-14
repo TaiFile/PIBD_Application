@@ -2,7 +2,8 @@ package pibd.application.application.dto;
 
 import pibd.application.domain.enums.Category;
 import pibd.application.domain.enums.Status;
-import java.util.Date;
+import pibd.application.domain.enums.ReactionType;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 public record PostResponseDTO(
@@ -11,12 +12,13 @@ public record PostResponseDTO(
         String content,
         String description,
         Set<String> mediaUrls,
-        Date createdAt,
-        String locality,
+        LocalDateTime createdAt,
+        String location,
         Status status,
         Category category,
         long reactionsCount,
-        long commentsCount
+        long commentsCount,
+        ReactionType userReaction
 ) {
 }
 

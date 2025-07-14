@@ -8,10 +8,10 @@ import java.util.Objects;
 @Embeddable
 public class ReactionUserCommentId implements Serializable {
 
-    @Column(name = "user_id")
+    @Column
     private Long userId;
 
-    @Column(name = "comment_id")
+    @Column
     private Long commentId;
 
     public ReactionUserCommentId() {

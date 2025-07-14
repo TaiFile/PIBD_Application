@@ -37,8 +37,8 @@ public class PostController {
     }
 
     @GetMapping("/posts")
-    public ResponseEntity<List<PostResponseDTO>> listPosts() {
-        List<PostResponseDTO> posts = listPostService.findAll();
+    public ResponseEntity<List<PostResponseDTO>> listPosts(@RequestParam Long userId) {
+        List<PostResponseDTO> posts = listPostService.findAll(userId);
         return ResponseEntity.ok(posts);
     }
 }

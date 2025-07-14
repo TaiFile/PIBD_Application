@@ -2,9 +2,9 @@ package pibd.application.domain.enums;
 
 public enum Status {
     OPEN,
-    IN_VALIDATION,
-    ANSWERED,
+    UNDER_REVIEW,
+    RESPONDED,
     CLOSED,
-    FILED,
+    ARCHIVED;
 }
 

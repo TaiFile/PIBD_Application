@@ -2,8 +2,8 @@ package pibd.application.domain.enums;
 
 public enum Category {
     COMPLAINT,
-    DOUBT,
+    QUESTION,
     REQUEST,
     COMPLIMENT,
-    DELETION;
+    DENUNCIATION;
 }

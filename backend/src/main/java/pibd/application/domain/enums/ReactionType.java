@@ -2,9 +2,8 @@ package pibd.application.domain.enums;
 
 public enum ReactionType {
     AGREE,
-    DISAGREE,
-    LIKE,
+    SUPPORT,
+    OUTRAGEOUS,
     URGENT,
-    RELEVANT,
-    REVOLTING
+    RELEVANT;
 }

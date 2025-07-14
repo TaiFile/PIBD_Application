@@ -5,12 +5,21 @@ import jakarta.persistence.*;
 import pibd.application.domain.enums.ReactionType;
 import pibd.application.domain.utils.ReactionUserPostId;
 
+import java.time.LocalDateTime;
+
 @Entity
-@Table(name = "reactions")
+@Table(name = "post_reactions")
 public class ReactionUserPost {
 
     @EmbeddedId
     private ReactionUserPostId id;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ReactionType type;
+
+    @Column
+    private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("userId")
@@ -22,10 +31,6 @@ public class ReactionUserPost {
     @JoinColumn(name = "post_id")
     private Post post;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private ReactionType type;
-
     public ReactionUserPost() {
     }
 
@@ -34,6 +39,7 @@ public class ReactionUserPost {
         this.post = post;
         this.type = type;
         this.id = new ReactionUserPostId(user.getId(), post.getId());
+        this.createdAt = LocalDateTime.now();
     }
 
     // Getters e Setters
@@ -51,6 +57,10 @@ public class ReactionUserPost {
 
     public void setUser(User user) {
         this.user = user;
+        if (this.id == null) {
+            this.id = new ReactionUserPostId();
+        }
+        this.id.setUserId(user.getId());
     }
 
     public Post getPost() {
@@ -59,6 +69,10 @@ public class ReactionUserPost {
 
     public void setPost(Post post) {
         this.post = post;
+        if (this.id == null) {
+            this.id = new ReactionUserPostId();
+        }
+        this.id.setPostId(post.getId());
     }
 
     public ReactionType getType() {
@@ -67,5 +81,13 @@ public class ReactionUserPost {
 
     public void setType(ReactionType type) {
         this.type = type;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }
