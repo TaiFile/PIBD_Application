@@ -20,7 +20,6 @@ O sistema segue uma arquitetura com separação clara entre frontend e backend:
 - **Java 17**
 - **Spring Boot 3.5.3**
 - **Spring Data JPA**
-- **PostgreSQL**
 - **Maven**
 - **Bean Validation**
 - **Spring Boot Docker Compose** (opcional)
