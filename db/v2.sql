@@ -1,4 +1,4 @@
--- Database Schema Creation
+-- Database Schema Creation for the java backend
 
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY, -- Unique user identifier
