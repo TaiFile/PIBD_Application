@@ -1,4 +1,4 @@
--- Database Schema Creation for the java backend
+-- Esquema do banco de dados versão 2 para a entrega final, gerado para funcionar com o backend java. 
 
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY, -- Unique user identifier
